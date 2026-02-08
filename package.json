@@ -5,8 +5,10 @@
   "main": "src/taskpane/index.tsx",
   "scripts": {
     "build": "webpack --mode production",
+    "build:webapp": "webpack --mode production --env target=webapp",
     "dev-server": "webpack serve --mode development",
     "start": "webpack serve --mode development",
+    "start:webapp": "webpack serve --mode development --env target=webapp",
     "lint": "eslint src/**/*.{ts,tsx}"
   },
   "dependencies": {
@@ -16,7 +18,8 @@
     "d3": "^7.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "regenerator-runtime": "^0.14.1"
+    "regenerator-runtime": "^0.14.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

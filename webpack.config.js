@@ -4,12 +4,71 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = (env, argv) => {
   const isDev = argv.mode === "development";
+  const target = (env && env.target) || "addin";
+
+  const includeAddin = target === "addin" || target === "all";
+  const includeWebapp = target === "webapp" || target === "all";
+
+  // Build entry points based on target
+  const entry = {};
+  if (includeAddin) {
+    entry.taskpane = "./src/taskpane/index.tsx";
+    entry.commands = "./src/commands/commands.ts";
+  }
+  if (includeWebapp) {
+    entry.webapp = "./src/webapp/index.tsx";
+  }
+
+  // Build plugins based on target
+  const plugins = [];
+  if (includeAddin) {
+    plugins.push(
+      new HtmlWebpackPlugin({
+        template: "./src/taskpane/taskpane.html",
+        filename: "taskpane.html",
+        chunks: ["taskpane"],
+      }),
+      new HtmlWebpackPlugin({
+        template: "./src/commands/commands.html",
+        filename: "commands.html",
+        chunks: ["commands"],
+      }),
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: "manifest.xml", to: "manifest.xml" },
+          { from: "assets", to: "assets" },
+        ],
+      })
+    );
+  }
+  if (includeWebapp) {
+    plugins.push(
+      new HtmlWebpackPlugin({
+        template: "./src/webapp/webapp.html",
+        filename: "index.html",
+        chunks: ["webapp"],
+      })
+    );
+  }
+
+  // Dev server config depends on target
+  const devServer = includeWebapp && !includeAddin
+    ? {
+        port: 3001,
+        headers: { "Access-Control-Allow-Origin": "*" },
+        static: { directory: path.resolve(__dirname, "dist") },
+        hot: true,
+      }
+    : {
+        port: 3000,
+        https: true,
+        headers: { "Access-Control-Allow-Origin": "*" },
+        static: { directory: path.resolve(__dirname, "dist") },
+        hot: true,
+      };
 
   return {
-    entry: {
-      taskpane: "./src/taskpane/index.tsx",
-      commands: "./src/commands/commands.ts",
-    },
+    entry,
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "[name].bundle.js",
@@ -45,35 +104,8 @@ module.exports = (env, argv) => {
         },
       ],
     },
-    plugins: [
-      new HtmlWebpackPlugin({
-        template: "./src/taskpane/taskpane.html",
-        filename: "taskpane.html",
-        chunks: ["taskpane"],
-      }),
-      new HtmlWebpackPlugin({
-        template: "./src/commands/commands.html",
-        filename: "commands.html",
-        chunks: ["commands"],
-      }),
-      new CopyWebpackPlugin({
-        patterns: [
-          { from: "manifest.xml", to: "manifest.xml" },
-          { from: "assets", to: "assets" },
-        ],
-      }),
-    ],
-    devServer: {
-      port: 3000,
-      https: true,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-      static: {
-        directory: path.resolve(__dirname, "dist"),
-      },
-      hot: true,
-    },
+    plugins,
+    devServer,
     devtool: isDev ? "source-map" : false,
   };
 };
