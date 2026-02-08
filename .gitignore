@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.dev-certs/
+*.log
+.DS_Store
+Thumbs.db
+.env
+.env.*
+*.pem
+*.key
+.claude/

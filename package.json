@@ -1,0 +1,46 @@
+{
+  "name": "relationship-navigator",
+  "version": "1.0.0",
+  "description": "Excel Add-in for modeling, visualizing, and analyzing professional relationship networks",
+  "main": "src/taskpane/index.tsx",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev-server": "webpack serve --mode development",
+    "start": "webpack serve --mode development",
+    "lint": "eslint src/**/*.{ts,tsx}"
+  },
+  "dependencies": {
+    "@fluentui/react-components": "^9.46.0",
+    "@fluentui/react-icons": "^2.0.230",
+    "core-js": "^3.36.0",
+    "d3": "^7.9.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "regenerator-runtime": "^0.14.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-react": "^7.23.3",
+    "@babel/preset-typescript": "^7.23.3",
+    "@types/d3": "^7.4.3",
+    "@types/office-js": "^1.0.377",
+    "@types/react": "^18.2.64",
+    "@types/react-dom": "^18.2.21",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "babel-loader": "^9.1.3",
+    "copy-webpack-plugin": "^12.0.2",
+    "css-loader": "^6.10.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.0",
+    "html-loader": "^5.0.0",
+    "html-webpack-plugin": "^5.6.0",
+    "style-loader": "^3.3.4",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.2"
+  }
+}
